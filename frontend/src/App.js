@@ -1,5 +1,6 @@
 // src/App.js
 import React, { useState } from 'react';
+import './main.css';
 
 const App = () => {
   const [name, setName] = useState('');
@@ -7,16 +8,20 @@ const App = () => {
 
   return (
     <main>
-      <label>Name:</label>
-      <input
-        type="text"
-        id="name-input"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <button id="add-name-btn" onClick={() => setNames([...names, name])}>
-        Add Name
-      </button>
+      
+      <div className = "AddName">
+        <label>Name:</label>
+        <input
+            type="text"
+            id="name-input"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+        />
+         <button id="add-name-btn" onClick={() => setNames([...names, name])}>
+          Add
+        </button>
+      </div>
+
 
       <br /><br /><br />
 
@@ -42,12 +47,12 @@ const App = () => {
               <td>{name}</td>
               <td>{new Date().toLocaleString()}</td>
               <td>
-                <button onClick={() => setNames(names.filter((_, i) => i !== index))}>
+                <button className = "Delete-Button" onClick={() => setNames(names.filter((_, i) => i !== index))}>
                   Delete
                 </button>
               </td>
               <td>
-                <button>Edit</button>
+                <button className = "Edit-Button">Edit</button>
               </td>
             </tr>
           ))}

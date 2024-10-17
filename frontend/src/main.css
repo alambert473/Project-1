@@ -1,0 +1,67 @@
+main {
+   width: 50%;
+   margin: 50px auto;
+   display: flex;                
+   align-items: center;    
+   flex-direction: column;
+}
+
+.AddName label {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.AddName button {
+    color: white;
+    background-color: rgb(56, 217, 56);
+    border: none;
+    padding: 3.5px;
+    padding-left: 7px;
+    padding-right: 7px;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+.AddName button:hover {
+    opacity: 0.8;
+    transition: opacity .5s;
+}
+
+#search-btn {
+    cursor: pointer;
+}
+
+table {
+    margin-top: 30px;
+}
+
+table, th, td {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 5px;
+}
+
+.Delete-Button {
+    background-color: rgb(235, 48, 48);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 3px 5px;
+    font-weight: bold;
+    opacity: .85;
+    cursor: pointer;
+}
+
+.Delete-Button:hover {
+    opacity: 0.7;
+    transition: opacity .5s;
+}
+
+.Edit-Button {
+    cursor: pointer;
+}

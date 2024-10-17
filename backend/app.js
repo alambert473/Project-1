@@ -36,7 +36,7 @@ app.post('/insert', (request, response) => {
 
 // read 
 app.get('/getAll', (request, response) => {
-    
+    console.log('test');
     const db = dbService.getDbServiceInstance();
 
     
@@ -102,6 +102,10 @@ app.delete('/delete/:id',
 )   
 
 // debug function, will be deleted later
+app.post('/insert', (request, response) => {
+
+});
+
 app.post('/debug', (request, response) => {
     // console.log(request.body); 
 

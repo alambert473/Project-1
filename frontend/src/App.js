@@ -1,10 +1,18 @@
 // src/App.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './main.css';
 
 const App = () => {
   const [name, setName] = useState('');
   const [names, setNames] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5050/getAll')
+    .then(response => response.json())
+    .then(data => console.log(data));
+  }, [])
+
+
 
   return (
     <main>

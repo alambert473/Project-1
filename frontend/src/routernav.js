@@ -10,6 +10,7 @@ const router = () => {
         <Routes>
           <Route index element = {<Register />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/app" element={<App />} />
         </Routes>
       </BrowserRouter>

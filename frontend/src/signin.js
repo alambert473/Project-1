@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './signin.css'
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -18,7 +19,8 @@ const SignIn = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className = "SigninPage" onSubmit={handleSubmit}>
+      <p>Sign in</p>
       <input name="email" type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} />
       <input name="password" type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
       <button type="submit">Sign In</button>

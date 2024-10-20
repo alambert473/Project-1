@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import './registration.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -27,14 +29,19 @@ const Register = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className = "Registrationform" onSubmit={handleSubmit}>
+      <p className = "RegisterText">Registration form</p>
       <input name="first_name" placeholder="First Name" onChange={handleChange} />
       <input name="last_name" placeholder="Last Name" onChange={handleChange} />
       <input name="email" type="email" placeholder="Email" onChange={handleChange} />
       <input name="password" type="password" placeholder="Password" onChange={handleChange} />
       <input name="salary" placeholder="Salary" onChange={handleChange} />
       <input name="age" placeholder="Age" onChange={handleChange} />
-      <button type="submit">Register</button>
+      <button type="submit">register</button>
+      <p>
+        Already have an account? click <Link to="/signin" className="heretext"> here </Link> to sign in!
+      </p>
+      
     </form>
   );
 };

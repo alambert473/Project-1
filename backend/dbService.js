@@ -87,6 +87,23 @@ class DbService {
         }
     }
 
+    // Check the user's password based on their username
+    async checkUserPassword(username, password) {
+       try {
+          const response = await new Promise((resolve, reject) => {
+             const query = "SELECT password FROM users WHERE username = ?;";
+             connection.query(query, [username], (err, results) => {
+                   if (err) reject(new Error(err.message));
+                   else resolve(results);
+             });
+           });
+            return response;
+
+       } catch (error) {
+            console.log(error);
+       }
+      }
+
     // Delete a user by ID
     async deleteUserById(id) {
         try {

@@ -56,6 +56,25 @@ app.get('/searchUser/:username', (request, response) => {
     .catch(err => console.log(err));
 });
 
+// READ: Check if the username and password match
+app.post('/checkUserCredentials', (request, response) => {
+    const { username, password } = request.body;
+    console.log(`Checking credentials for user: ${username}`);
+
+    const db = dbService.getDbServiceInstance();
+    const result = db.checkUserPassword(username, password); // call the DB function
+
+    result
+    .then(data => {
+        if (data.length > 0 && data[0].password === password) {
+            response.json({ success: true, message: 'Password matches!' });
+        } else {
+            response.json({ success: false, message: 'Invalid username or password' });
+        }
+    })
+    .catch(err => console.log(err));
+});
+
 // UPDATE: Update user data by ID
 app.patch('/updateUser', (request, response) => {
     console.log("app: update is called");

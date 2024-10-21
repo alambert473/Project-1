@@ -26,11 +26,11 @@ const connection = mysql.createConnection({
 
 // if you configure directly in this file, there is a security issue, but it will work
 const connection = mysql.createConnection({
-     host:"localhost",
-     user:"root",        
-     password:"",
-     database:"web_app",
-     port:3306
+     host: process.env.HOST,
+     user: process.env.USERNAME,
+     password: process.env.PASSWORD,
+     database: process.env.DATABASE,
+     port: process.env.PORT 
 });
 
 

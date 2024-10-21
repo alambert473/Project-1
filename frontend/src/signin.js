@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
+import {useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './signin.css'
 
 const SignIn = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3001/signin', { email, password });
-      localStorage.setItem('token', res.data.token); 
-      alert('Sign-In Successful');
+      const res = await axios.post('http://localhost:5050/checkUserCredentials', {
+        username, 
+        password
+      });
+
+      if (res.data.success) { 
+        alert('Sign-In Successful');
+        navigate('/App');  // Redirect to the app page after successful sign-in
+      } else {
+        alert('Invalid credentials');
+      }
     } catch (err) {
       console.error(err);
       alert('Invalid credentials');
@@ -19,10 +29,20 @@ const SignIn = () => {
   };
 
   return (
-    <form className = "SigninPage" onSubmit={handleSubmit}>
+    <form className="SigninPage" onSubmit={handleSubmit}>
       <p>Sign in</p>
-      <input name="email" type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <input name="password" type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+      <input
+        name="username"
+        type="username"
+        placeholder="Username"
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <input
+        name="password"
+        type="password"
+        placeholder="Password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
       <button type="submit">Sign In</button>
     </form>
   );

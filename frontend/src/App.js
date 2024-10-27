@@ -1,79 +1,82 @@
 // src/App.js
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './main.css';
 
 const App = () => {
-  const [name, setName] = useState('');
-  const [names, setNames] = useState([]);
+  const [name, setName] = useState(''); // Search input
+  const [users, setUsers] = useState([]); // Array to hold user data from the API
 
-  useEffect(() => {
-    fetch('http://localhost:5050/getAll')
-    .then(response => response.json())
-    .then(data => console.log(data));
-  }, [])
+  // Function to search users by first or last name
+  const handleSearch = () => {
+    fetch('http://localhost:5050/getAllUsers')
+        .then(response => response.json())
+        .then(data => {
+              const usersArray = data.data;
+
+              let newusers = usersArray.filter(user => {
+                if (user.firstname == name || user.lastname == name) {
+                  return true;
+                }
+                });
+
+              setUsers(newusers);
+        })
 
 
+     .catch(error => console.error('Error fetching data:', error));
+};
 
   return (
     <main>
-      
-      <div className = "AddName">
-        <label>Name:</label>
-        <input
+      <div className="Part-3">
+        <p>search users by first and/or last name</p>
+        <div className="button-container">
+          <input
             type="text"
-            id="name-input"
+            placeholder="search by first/last name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
-        />
-         <button id="add-name-btn" onClick={() => setNames([...names, name])}>
-          Add
-        </button>
-      </div>
-
-
-      <br /><br /><br />
-
-      <div>
-        <input placeholder="search by name" id="search-input" />
-        <button id="search-btn">Search</button>
+            onChange={(e) => setName(e.target.value)} // Update name state on input change
+          />
+          <button onClick={handleSearch}>search</button>
+        </div>
       </div>
 
       <table id="table">
         <thead>
           <tr>
             <th>Id</th>
-            <th>Name</th>
-            <th>Date Added</th>
-            <th>Delete</th>
-            <th>Edit</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Salary</th>
+            <th>Age</th>
+            <th>Register Day</th>
+            <th>Sign In Time</th>
           </tr>
         </thead>
         <tbody>
-          {names.map((name, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{name}</td>
-              <td>{new Date().toLocaleString()}</td>
-              <td>
-                <button className = "Delete-Button" onClick={() => setNames(names.filter((_, i) => i !== index))}>
-                  Delete
-                </button>
-              </td>
-              <td>
-                <button className = "Edit-Button">Edit</button>
-              </td>
+          {users.length > 0 ? (
+            users.map((user, index) => (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.username}</td>
+                <td>{user.password}</td>
+                <td>{user.firstname}</td>
+                <td>{user.lastname}</td>
+                <td>{user.salary}</td>
+                <td>{user.age}</td>
+                <td>{user.registerday}</td>
+                <td>{user.signintime || 'Never signed in'}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="9">Empty</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
-
-      <section hidden id="update-row">
-        <label>Name:</label>
-        <input type="text" id="update-name-input" />
-        <button id="update-row-btn" value="">
-          Update
-        </button>
-      </section>
     </main>
   );
 };

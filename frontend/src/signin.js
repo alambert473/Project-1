@@ -18,6 +18,7 @@ const SignIn = () => {
 
       if (res.data.success) { 
         alert('Sign-In Successful');
+        console.log('working');
         navigate('/App');  // Redirect to the app page after successful sign-in
       } else {
         alert('Invalid credentials');

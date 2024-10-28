@@ -1,25 +1,86 @@
-// src/App.js
 import React, { useState } from 'react';
 import './main.css';
 
 const App = () => {
+  const [showtext, setShowtext] = useState('');
+  const [XSalary, setXSalary] = useState('');
+  const [YSalary, setYSalary] = useState('');
+  const [Xage, setXage] = useState('');
+  const [Yage, setYage] = useState('');
   const [name, setName] = useState(''); // Search input
+  const [id, setId] = useState(''); // search id
   const [users, setUsers] = useState([]); // Array to hold user data from the API
 
-  // Function to search users by first or last name
-  const handleSearch = () => {
+  const shownameusers = (datatype) => {
+    const usersArray = datatype.data;
+
+    let newusers = usersArray.filter(user => {
+      if (user.firstname == name || user.lastname == name) {
+        return true;
+      }
+      });
+
+    setUsers(newusers);
+    setShowtext('Showing results for search by first/last name');
+  }
+
+
+  const showidusers = (datatype) => {
+    const usersArray = datatype.data;
+
+    let newusers = usersArray.filter(user => {
+      if (user.id == id) {
+        return true;
+      }
+      });
+
+    setUsers(newusers);
+    setShowtext('Showing results for search users by userid');
+  }
+
+
+  const showsalary = (datatype) => {
+    const usersArray = datatype.data;
+
+    let newusers = usersArray.filter(user => {
+      if (user.salary > XSalary && user.salary < YSalary) {
+        return true;
+      }
+    });
+
+    setUsers(newusers);
+    setShowtext('Showing results for search all users whose salary is between X and Y');
+  }
+
+
+  const showage = (datatype) => {
+    const usersArray = datatype.data;
+
+    let newusers = usersArray.filter(user => {
+      if (user.age > Xage && user.age < Yage) {
+        return true;
+      }
+    });
+
+    setUsers(newusers);
+    setShowtext('Showing results for search all users whose ages are between X and Y');
+  }
+
+
+
+  const handleSearch = (type) => {
     fetch('http://localhost:5050/getAllUsers')
         .then(response => response.json())
         .then(data => {
-              const usersArray = data.data;
-
-              let newusers = usersArray.filter(user => {
-                if (user.firstname == name || user.lastname == name) {
-                  return true;
-                }
-                });
-
-              setUsers(newusers);
+            if (type == "searchname") {
+              shownameusers(data);
+            } else if (type == 'searchid') {
+              showidusers(data);
+            } else if (type == 'searchsalary') {
+              showsalary(data)
+            } else if (type == 'searchage') {
+              showage(data);
+            }
         })
 
 
@@ -35,11 +96,65 @@ const App = () => {
             type="text"
             placeholder="search by first/last name"
             value={name}
-            onChange={(e) => setName(e.target.value)} // Update name state on input change
+            onChange={(e) => setName(e.target.value)} 
           />
-          <button onClick={handleSearch}>search</button>
+          <button onClick={() => handleSearch('searchname')}>search</button>
         </div>
       </div>
+
+      <div className="Part-4 addmargin">
+        <p>search users by userid</p>
+        <div className="button-container">
+          <input
+            type="text"
+            placeholder="search users by userid"
+            value={id}
+            onChange={(e) => setId(e.target.value)}
+          />
+          <button onClick={() => handleSearch('searchid')}>search</button>
+        </div>
+      </div>
+
+      <div className="Part-5 addmargin">
+        <p>search all users whose salary is between x and y</p>
+        <div className="button-container">
+          <input className = "X-value"
+            type="text"
+            placeholder="X"
+            value={XSalary}
+            onChange={(e) => setXSalary(e.target.value)} 
+          />
+          <input className='Y-value'
+            type="text"
+            placeholder="Y"
+            value={YSalary}
+            onChange={(e) => setYSalary(e.target.value)} 
+          />
+          <button onClick={() => handleSearch('searchsalary')}>search</button>
+        </div>
+      </div>
+
+      <div className="Part-6 addmargin">
+        <p>Search all users whose ages are between X and Y</p>
+        <div className="button-container">
+          <input className = "X-value"
+            type="text"
+            placeholder="X"
+            value={Xage}
+            onChange={(e) => setXage(e.target.value)} 
+          />
+          <input className='Y-value'
+            type="text"
+            placeholder="Y"
+            value={Yage}
+            onChange={(e) => setYage(e.target.value)} 
+          />
+          <button onClick={() => handleSearch('searchage')}>search</button>
+        </div>
+      </div>
+      
+
+      <p className="show-text">{showtext}</p>
 
       <table id="table">
         <thead>
@@ -57,7 +172,7 @@ const App = () => {
         </thead>
         <tbody>
           {users.length > 0 ? (
-            users.map((user, index) => (
+            users.map(user => (
               <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.username}</td>

@@ -21,7 +21,8 @@ const App = () => {
       });
 
     setUsers(newusers);
-    setShowtext('Showing results for search by first/last name');
+    setShowtext(`Showing results for search by first/last name of ${name}`);
+    setName('');
   }
 
 
@@ -35,7 +36,8 @@ const App = () => {
       });
 
     setUsers(newusers);
-    setShowtext('Showing results for search users by userid');
+    setShowtext(`Showing results for search users by userid of ${id}`);
+    setId('');
   }
 
 
@@ -49,7 +51,9 @@ const App = () => {
     });
 
     setUsers(newusers);
-    setShowtext('Showing results for search all users whose salary is between X and Y');
+    setShowtext(`Showing results for search all users whose salary is between ${XSalary} and ${YSalary}`);
+    setXSalary('');
+    setYSalary('');
   }
 
 
@@ -63,7 +67,9 @@ const App = () => {
     });
 
     setUsers(newusers);
-    setShowtext('Showing results for search all users whose ages are between X and Y');
+    setShowtext(`Showing results for search all users whose age is between ${Xage} and ${Yage}`);
+    setXage('');
+    setYage('');
   }
 
 

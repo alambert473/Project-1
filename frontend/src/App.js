@@ -158,6 +158,15 @@ const App = () => {
           <button onClick={() => handleSearch('searchage')}>search</button>
         </div>
       </div>
+
+      <div className="Part-7 findjohn">
+        <p>Search users who registered after john registered, where john is the userid.</p>
+        <div className="button-container">
+         
+          <button onClick={() => handleSearch('searchjohn')}>search</button>
+        </div>
+      </div>
+
       
 
       <p className="show-text">{showtext}</p>

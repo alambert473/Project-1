@@ -4,7 +4,7 @@ dotenv.config(); // read from .env file
 
 let instance = null;
 
-// if you configure directly in this file, there is a security issue, but it will work
+// if you configure directly in this file, there is a security issue, but it will work.
 const connection = mysql.createConnection({
 
      host: "localhost",

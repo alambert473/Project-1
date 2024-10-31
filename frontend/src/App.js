@@ -14,14 +14,27 @@ const App = () => {
   const shownameusers = (datatype) => {
     const usersArray = datatype.data;
 
-    let newusers = usersArray.filter(user => {
-      if (user.firstname == name || user.lastname == name) {
-        return true;
-      }
-      });
+    const nameParts = name.trim().split(" ");
 
+    let newusers = usersArray.filter(user => {
+      if (nameParts.length === 1) {
+        return (
+          user.firstname.toLowerCase() === nameParts[0].toLowerCase() ||
+          user.lastname.toLowerCase() === nameParts[0].toLowerCase()
+        );
+      } 
+
+      else if (nameParts.length === 2) {
+        return (
+          user.firstname.toLowerCase() === nameParts[0].toLowerCase() &&
+          user.lastname.toLowerCase() === nameParts[1].toLowerCase()
+        );
+      }
+      return false; 
+    });
+  
     setUsers(newusers);
-    setShowtext(`Showing results for search by first/last name of ${name}`);
+    setShowtext(`Showing results for search by name: ${name}`);
     setName('');
   }
 
@@ -72,23 +85,124 @@ const App = () => {
     setYage('');
   }
 
+  const checksignin = (datatype) => {
+      const userarray = datatype.data;
+
+      let newusers = userarray.filter(user => {
+        if (user.signintime === null) {
+          return true;
+        }
+      });
+
+
+      setUsers(newusers);
+      setShowtext(`Showing results for search users who never signed in`);
+  }
+
+  const afterjohnid = (datatype) => {
+    const usersArray = datatype.data;
+
+    const johnUser = usersArray.find(user => user.firstname.toLowerCase() === "john");
+    if (!johnUser) {
+      setShowtext("User 'john' not found.");
+      return;
+    }
+  
+    const johnRegisterDate = new Date(johnUser.registerday);
+  
+    let newusers = usersArray.filter(user => new Date(user.registerday) > johnRegisterDate);
+  
+    setUsers(newusers);
+    setShowtext("Showing results for users who registered after John registered");
+  }
+
+  
+  const sameDay = (datatype) => {
+    const userarray = datatype.data;
+    let johndate = null;
+
+    userarray.forEach(e => {
+      const nametouppercase = e.firstname.toUpperCase();
+      console.log(nametouppercase);
+
+      if (nametouppercase === 'JOHN'){
+        johndate = String(e.registerday);
+      }
+    });
+
+    if (johndate) {
+        const johnyear = Number(johndate.substring(0, 4));
+        const johnthismonth = Number(johndate.substring(5, 7));
+        const johnthisday = Number(johndate.substring(8, 10));
+
+        let newusers = userarray.filter(user => {
+          const registerinfo = user.registerday;
+
+          const useryear = Number(registerinfo.substring(0, 4));
+          const userthismonth = Number(registerinfo.substring(5, 7));
+          const userthisday = Number(registerinfo.substring(8, 10));
+
+          if (johnyear === useryear && johnthismonth === userthismonth && johnthisday === userthisday) {
+            return true;
+          }
+      });
+
+      setUsers(newusers);
+      setShowtext(`Results for users who registered on the same day that john registered`);
+    }
+  }
+
+
+  const registeredtoday = (datatype) => {
+    const userarray = datatype.data;
+
+    const today = new Date().toISOString();
+    const todaythisyear = Number(today.substring(0, 4));
+    const todaythismonth = Number(today.substring(5, 7));
+    const todaythisday = Number(today.substring(8, 10));
+
+    console.log(today);
+
+    let newusers = userarray.filter(user => {
+      const registerinfo = user.registerday;
+
+      const useryear = Number(registerinfo.substring(0, 4));
+      const usermonth = Number(registerinfo.substring(5, 7));
+      const userday = Number(registerinfo.substring(8, 10));
+
+      if (todaythisyear === useryear && todaythismonth === usermonth && todaythisday === userday) {
+        return true;
+      }
+    })
+
+    setUsers(newusers);
+    setShowtext(`Results for users that registered today`);
+  }
+
 
 
   const handleSearch = (type) => {
     fetch('http://localhost:5050/getAllUsers')
         .then(response => response.json())
         .then(data => {
-            if (type == "searchname") {
+            if (type === "searchname") {
               shownameusers(data);
-            } else if (type == 'searchid') {
+            } else if (type === 'searchid') {
               showidusers(data);
-            } else if (type == 'searchsalary') {
+            } else if (type === 'searchsalary') {
               showsalary(data)
-            } else if (type == 'searchage') {
+            } else if (type === 'searchage') {
               showage(data);
+            } else if (type === "afterjohnuserid") {
+              afterjohnid(data);
+            }else if (type === "checksignin") {
+              checksignin(data);
+            } else if (type === "part9afterjohn") {
+              sameDay(data);
+            } else if (type === 'registeredtoday') {
+              registeredtoday(data);
             }
         })
-
 
      .catch(error => console.error('Error fetching data:', error));
 };
@@ -156,6 +270,37 @@ const App = () => {
             onChange={(e) => setYage(e.target.value)} 
           />
           <button onClick={() => handleSearch('searchage')}>search</button>
+        </div>
+      </div>
+
+      <div className="Part-7 addmargin">
+        <p>Search users who registered after john registered, where john is the userid.</p>
+        <div className="button-container">
+          <div>
+          <button className = "searchforjohn" onClick={() => handleSearch('afterjohnuserid')}>search</button>
+          </div>
+          
+        </div>
+      </div>
+
+      <div className="Part-8 addmargin">
+        <p>search users who never signed in</p>
+        <div className="button-container">
+          <button  className="neversignedin" onClick={() => handleSearch('checksignin')}>search</button>
+        </div>
+      </div>
+
+      <div className="Part-9 addmargin">
+        <p>Search users who registered on the same day that john registered</p>
+        <div className="button-container">
+          <button className="samedayasjohn" onClick={() => handleSearch('part9afterjohn')}>search</button>
+        </div>
+      </div>
+
+      <div className="Part-10 addmargin">
+        <p>Return the users who registered today</p>
+        <div className="button-container">
+          <button className="registeredtoday" onClick={() => handleSearch('registeredtoday')}>search</button>
         </div>
       </div>
       

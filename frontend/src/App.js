@@ -272,37 +272,6 @@ const App = () => {
           <button onClick={() => handleSearch('searchage')}>search</button>
         </div>
       </div>
-
-      <div className="Part-7 addmargin">
-        <p>Search users who registered after john registered, where john is the userid.</p>
-        <div className="button-container">
-          <div>
-          <button className = "searchforjohn" onClick={() => handleSearch('afterjohnuserid')}>search</button>
-          </div>
-          
-        </div>
-      </div>
-
-      <div className="Part-8 addmargin">
-        <p>search users who never signed in</p>
-        <div className="button-container">
-          <button  className="neversignedin" onClick={() => handleSearch('checksignin')}>search</button>
-        </div>
-      </div>
-
-      <div className="Part-9 addmargin">
-        <p>Search users who registered on the same day that john registered</p>
-        <div className="button-container">
-          <button className="samedayasjohn" onClick={() => handleSearch('part9afterjohn')}>search</button>
-        </div>
-      </div>
-
-      <div className="Part-10 addmargin">
-        <p>Return the users who registered today</p>
-        <div className="button-container">
-          <button className="registeredtoday" onClick={() => handleSearch('registeredtoday')}>search</button>
-        </div>
-      </div>
       
 
       <p className="show-text">{showtext}</p>
